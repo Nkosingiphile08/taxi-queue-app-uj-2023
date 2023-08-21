@@ -26,19 +26,19 @@ app.post('/api/passenger/leave', (req, res) => {
     })
 });
 
+//taxi leaves the queue
 app.post('/api/taxi/join', (req, res) => {
     res.json({
         message : 'leave queue'
     })
 });
 
-// Note there needs to be at least 12 people in the queue for the taxi to depart
+// 12 people need to be in the queue for the taxi to depart
 app.post('/api/taxi/depart', (req, res) => {
     res.json({
         message : 'taxi depart from queue'
     })
 });
-
 
 // return the number of people in the queue
 app.get('/api/passenger/queue', (req, res) => {

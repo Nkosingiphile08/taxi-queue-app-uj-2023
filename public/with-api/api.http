@@ -1,0 +1,26 @@
+###
+POST http://localhost:4015/api/passenger/join 
+Content-Type: application/json
+
+###
+GET http://localhost:4015/api/passenger/join
+
+### Leave Passenger Queue
+POST http://localhost:4015/api/passenger/leave
+Content-Type: application/json
+
+### Join Taxi Queue
+POST http://localhost:4015/api/taxi/join
+Content-Type: application/json
+
+### Depart Taxi
+POST http://localhost:4015/api/taxi/depart
+Content-Type: application/json
+
+### Get Passenger Queue Length
+GET http://localhost:4015/api/passenger/queue
+
+
+### Get Taxi Queue Length
+GET http://localhost:4015/api/taxi/queue
+

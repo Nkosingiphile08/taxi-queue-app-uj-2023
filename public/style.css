@@ -14,7 +14,7 @@ body {
 
 .section {
 	flex: 1;
-	background-color: steelblue;
+	background-color: lightblue;
 	padding: 2em;
 	margin: 1em;
 	border-radius: 0.5em;
