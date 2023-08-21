@@ -26,6 +26,7 @@
   "scripts": {
     "dev": "",
     "test": "",
+    "start": "node index.js"
   },
   "dependencies": {
     "express": "^4.18.2",
