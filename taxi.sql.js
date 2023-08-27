@@ -9,28 +9,50 @@ const db = await sqlite.open({
 await db.migrate();
 
 export async function joinQueue() {
-    await db.run('UPDATE passenger_queue SET name = ? WHERE id = ?', ['Person', 1]);
+
+    await db.run('UPDATE taxi_queue SET passenger_queue_count = passenger_queue_count + 1');
+
+    const sql = await db.get('SELECT passenger_queue_count FROM taxi_queue');
+    return sql;  
+
 }
 
 export async function leaveQueue() {
-    const person = await db.get('SELECT * FROM passenger_queue ORDER BY id LIMIT 1');
-    if (person) {
-        await db.run('DELETE FROM passenger_queue WHERE id = ?', person.id);
-    }
+
+    await db.run('UPDATE taxi_queue SET passenger_queue_count = passenger_queue_count - 1');
+
+    const sql = await db.get('SELECT passenger_queue_count FROM taxi_queue');
+    return sql;
+    
 }
 
 export async function joinTaxiQueue() {
-    await db.run('UPDATE INTO passenger_queue (name) VALUES (?)', ['Taxi']);
+
+    await db.run('UPDATE taxi_queue SET taxi_queue_count = taxi_queue_count + 1');
+
+    const sql = await db.get('SELECT taxi_queue_count FROM taxi_queue');
+    return sql;
+   
 }
 
 export async function queueLength() {
-    const result = await db.get('SELECT COUNT(*) AS count FROM passenger_queue');
-    return result.count;
-}
+
+    const sql = await db.get('SELECT passenger_queue_count FROM taxi_queue');
+    return sql;
+} 
 
 export async function taxiQueueLength() {
-    const result = await db.get('SELECT COUNT(*) AS count FROM taxi_queue');
-    return result.count;
+
+    const sql = await db.get('SELECT taxi_queue_count FROM taxi_queue');
+    return sql;
+}
+
+export async function taxiDepart() {
+
+   await db.run('UPDATE taxi_queue SET taxi_queue_count = taxi_queue_count - 1, passenger_queue_count = passenger_queue_count-12 WHERE passenger_queue_count >= 12 AND taxi_queue_count > 0');
+   const sql = await db.get('select * from taxi_queue');
+   return sql;
+
 }
 
 export async function taxiDepart() {
@@ -39,10 +61,9 @@ export async function taxiDepart() {
 
     if (passengerCount >= 12 && taxiQueueCount > 0) {
         // Remove 12 people from passenger queue
-        await db.run('REMOVE FROM passenger_queue WHERE id IN (SELECT id FROM passenger_queue LIMIT 12)');
+      await db.run('REMOVE FROM passenger_queue WHERE id IN (SELECT id FROM passenger_queue LIMIT 12)');
 
         // Remove one taxi from taxi queue
-        await db.run('REMOVE FROM taxi_queue WHERE id IN (SELECT id FROM taxi_queue LIMIT 1)');
+      await db.run('REMOVE FROM taxi_queue WHERE id IN (SELECT id FROM taxi_queue LIMIT 1)');
     }
 }
-
